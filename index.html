@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Tennis Score Keeper</title>
+</head>
+
+<body>
+
+    <main class="container">
+        <h1><span id="p1Display">0</span> to <span id="p2Display">0</span></h1>
+
+        <p>Use the buttons below to keep score</p>
+
+        <section>
+            <label for="winningScore" class="label is-size-4 is-inline mr-3">Playing To</label>
+            <select name="winningScore" id="winningScore">
+                <option value="" disabled selected hidden>--Select Winning Score--</option>
+                <option value="three">3</option>
+                <option value="five">5</option>
+                <option value="eleven">11</option>
+                <option value="twenty-one">21</option>
+            </select>
+        </section>
+
+        <section>
+            <button id="p1Button" disabled>+1 Player One</button>
+            <button id="p2Button" disabled>+1 Player Two</button>
+            <button id="reset">Reset</button>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
