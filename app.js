@@ -3,6 +3,7 @@ const resetButton = document.querySelector('#reset');
 const winningScoreSelect = document.querySelector('#winningScore');
 let isGameOver = false;
 let winningScore = null;
+let deuce = false;
 
 // Objects for both Players
 const p1 = {
@@ -20,6 +21,7 @@ const p2 = {
 // HELPER - Function to Reset Game
 const resetGame = function () {
     isGameOver = false;
+    deuce = false;
     winningScoreSelect.removeAttribute('disabled', '');
     winningScoreSelect.selectedIndex = 0;
 
@@ -43,6 +45,43 @@ const gameOver = function (winner, loser) {
     loser.button.setAttribute('disabled', '');
 }
 
+// HELPER - Function that is called when Game is Over
+const deucePoint = function () {
+    if (p1.score === winningScore && p2.score === winningScore) {
+        // Reduce both scores (back to Deuce)
+        p1.score--;
+        p2.score--;
+        // Display Current Scores again
+        p1.display.textContent = p1.score;
+        p2.display.textContent = p2.score;
+    }
+    else if (p1.score === winningScore && p2.score === winningScore - 1) {
+        // Display advantage Strings
+        p1.display.textContent = 'ADV';
+        p2.display.textContent = '-';
+    }
+    else if (p1.score === winningScore - 1 && p2.score === winningScore) {
+        // Display advantage Strings
+        p1.display.textContent = '-';
+        p2.display.textContent = 'ADV';
+    }
+
+    // Winning Scenario
+    else if (p1.score === winningScore + 1) {
+        // Display Current Scores again
+        p1.display.textContent = p1.score;
+        p2.display.textContent = p2.score;
+        gameOver(p1, p2);
+    }
+    // Winning Scenario
+    else if (p2.score === winningScore + 1) {
+        // Display Current Scores again
+        p1.display.textContent = p1.score;
+        p2.display.textContent = p2.score;
+        gameOver(p2, p1);
+    }
+}
+
 // HELPER - Function that is called when a Player Button is clicked
 const updateScore = function (player) {
     // Disable Changing of Winning Score as soon as game starts
@@ -52,12 +91,20 @@ const updateScore = function (player) {
     player.score++;
     player.display.textContent = player.score;
 
-    // Game Over if a player wins - check if game is over
-    if (player.score === winningScore) {
-        if (player === p1)
-            gameOver(p1, p2);
-        else
-            gameOver(p2, p1);
+    // DEUCE - check
+    if (deuce) {
+        deucePoint();
+    }
+    else {
+        deuce = (p1.score === winningScore - 1) && (p2.score === winningScore - 1);
+
+        // Game Over if a player wins - check if game is over
+        if (player.score === winningScore) {
+            if (player === p1)
+                gameOver(p1, p2);
+            else
+                gameOver(p2, p1);
+        }
     }
 }
 
