@@ -6,32 +6,75 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table Tennis Score Keeper</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <style>
+        body {
+            background-color: beige;
+        }
+    </style>
 </head>
 
 <body>
 
-    <main class="container">
-        <h1><span id="p1Display">0</span> to <span id="p2Display">0</span></h1>
+    <section class="section">
+        <main class="container">
+            <div class="columns">
+                <div class="column is-half is-offset-one-quarter">
+                    <div class="card">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-16by9">
+                                    <img src="https://images.unsplash.com/photo-1611251135345-18c56206b863?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                                        </figure>
+                            </div>
 
-        <p>Use the buttons below to keep score</p>
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Table Tennis Scoreboard
+                                </p>
+                                <button class="card-header-icon" aria-label="more options">
+                                    <span class="icon">
+                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                            </header>
+                        </div>
 
-        <section>
-            <label for="winningScore" class="label is-size-4 is-inline mr-3">Playing To</label>
-            <select name="winningScore" id="winningScore">
-                <option value="" disabled selected hidden>--Select Winning Score--</option>
-                <option value="three">3</option>
-                <option value="five">5</option>
-                <option value="eleven">11</option>
-                <option value="twenty-one">21</option>
-            </select>
-        </section>
+                        <div class="card-content">
+                            <div class="content">
+                                <h1 class="title is-1"><span id="p1Display">0</span> to <span id="p2Display">0</span>
+                                </h1>
+                                <p class="subtitle is-size-5">Use the buttons below to keep score</p>
+                                <div>
+                                    <label for="winningScore" class="label is-size-4 is-inline mr-3">Playing To</label>
+                                    <div class="select is-rounded is-size-6">
+                                        <select name="winningScore" id="winningScore">
+                                            <option value="" disabled selected hidden>--Select Winning Score--</option>
+                                            <option value="three">3</option>
+                                            <option value="five">5</option>
+                                            <option value="eleven">11</option>
+                                            <option value="twenty-one">21</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        <section>
-            <button id="p1Button" disabled>+1 Player One</button>
-            <button id="p2Button" disabled>+1 Player Two</button>
-            <button id="reset">Reset</button>
-        </section>
-    </main>
+                        <footer class="card-footer">
+                            <button id="p1Button" class="card-footer-item button is-size-8 is-primary" disabled>+1
+                                Player
+                                One</button>
+                            <button id="p2Button" class="card-footer-item button is-size-8 is-info" disabled>+1 Player
+                                Two</button>
+                            <button id="reset" class="card-footer-item button is-size-8 is-danger">Reset</button>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
 
     <script src="app.js"></script>
 </body>
