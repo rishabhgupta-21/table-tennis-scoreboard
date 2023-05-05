@@ -1,92 +1,89 @@
-const p1Button = document.querySelector('#p1Button');
-const p2Button = document.querySelector('#p2Button');
+// Variables
 const resetButton = document.querySelector('#reset');
-const p1Display = document.querySelector('#p1Display');
-const p2Display = document.querySelector('#p2Display');
-const selectedWinningScore = document.querySelector('#winningScore');
-
+const winningScoreSelect = document.querySelector('#winningScore');
 let isGameOver = false;
 let winningScore = null;
-let p1Score = 0;
-let p2Score = 0;
 
-console.dir(selectedWinningScore);
-
-// Function to Reset Game
-const resetGame = function () {
-    isGameOver = false;
-    selectedWinningScore.removeAttribute('disabled', '');
-    selectedWinningScore.selectedIndex = 0;
-    p1Score = 0;
-    p2Score = 0;
-    p1Display.innerText = '0';
-    p2Display.innerText = '0';
-    p1Display.classList.remove('has-text-success', 'has-text-danger');
-    p2Display.classList.remove('has-text-success', 'has-text-danger');
-    p1Button.setAttribute('disabled', '');
-    p2Button.setAttribute('disabled', '');
+// Objects for both Players
+const p1 = {
+    button: document.querySelector('#p1Button'),
+    display: document.querySelector('#p1Display'),
+    score: 0
 }
 
-// Function that is implemented when Game is Over
+const p2 = {
+    button: document.querySelector('#p2Button'),
+    display: document.querySelector('#p2Display'),
+    score: 0
+}
+
+// HELPER - Function to Reset Game
+const resetGame = function () {
+    isGameOver = false;
+    winningScoreSelect.removeAttribute('disabled', '');
+    winningScoreSelect.selectedIndex = 0;
+
+    for (let p of [p1, p2]) {
+        p.score = 0;
+        p.display.innerText = '0';
+        p.display.classList.remove('has-text-success', 'has-text-danger');
+        p.button.setAttribute('disabled', '');
+    }
+}
+
+// HELPER - Function that is called when Game is Over
 const gameOver = function (winner, loser) {
     isGameOver = true;
 
-    if (winner === 'p1') {
-        p1Display.classList.add('has-text-success');
-        p2Display.classList.add('has-text-danger');
-    }
-    else {
-        p2Display.classList.add('has-text-success');
-        p1Display.classList.add('has-text-danger');
-    }
+    winner.display.classList.add('has-text-success');
+    loser.display.classList.add('has-text-danger');
 
-    p1Button.setAttribute('disabled', '');
-    p2Button.setAttribute('disabled', '');
+    // Disabled player buttons so that the score CANNOT be increased now!
+    winner.button.setAttribute('disabled', '');
+    loser.button.setAttribute('disabled', '');
+}
+
+// HELPER - Function that is called when a Player Button is clicked
+const updateScore = function (player) {
+    // Disable Changing of Winning Score as soon as game starts
+    winningScoreSelect.setAttribute('disabled', '');
+
+    // Increment score
+    player.score++;
+    player.display.textContent = player.score;
+
+    // Game Over if a player wins - check if game is over
+    if (player.score === winningScore) {
+        if (player === p1)
+            gameOver(p1, p2);
+        else
+            gameOver(p2, p1);
+    }
 }
 
 // Changing the Selected Option
-selectedWinningScore.addEventListener('change', () => {
-    if (selectedWinningScore.selectedIndex) {
+winningScoreSelect.addEventListener('change', () => {
+    // If it is changed to anything other than the default option
+    if (winningScoreSelect.selectedIndex) {
         // Set Winning Score
-        winningScore = parseInt(selectedWinningScore.selectedOptions[0].textContent);
+        winningScore = parseInt(winningScoreSelect.selectedOptions[0].textContent);
 
         // Enable Buttons
-        p1Button.removeAttribute('disabled', '');
-        p2Button.removeAttribute('disabled', '');
+        p1.button.removeAttribute('disabled', '');
+        p2.button.removeAttribute('disabled', '');
     }
 })
 
 // Clicking on Player 1 Button
-p1Button.addEventListener('click', (e) => {
-    // Disable Changing of Winning Score as soon as game starts
-    selectedWinningScore.setAttribute('disabled', '');
-
-    // selectedWinningScore.selectedOptions[0].textContent
-
-    if (!isGameOver) {
-        // Increment value
-        p1Score++;
-        p1Display.textContent = p1Score;
-    }
-
-    if (p1Score === winningScore) {
-        gameOver('p1', 'p2');
-    }
+p1.button.addEventListener('click', (e) => {
+    if (!isGameOver)
+        updateScore(p1);
 })
 
 // Clicking on Player 2 Button
 p2Button.addEventListener('click', (e) => {
-    selectedWinningScore.setAttribute('disabled', '');
-
-    if (!isGameOver) {
-        // Increment value
-        p2Score++;
-        p2Display.textContent = p2Score;
-    }
-
-    if (p2Score === winningScore) {
-        gameOver('p2', 'p1');
-    }
+    if (!isGameOver)
+        updateScore(p2);
 })
 
 // Clicking on Reset Button
